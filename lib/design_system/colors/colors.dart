@@ -139,7 +139,7 @@ class Colors {
       case Appearance.dark: return const Color(0xFF17172A);
     }
   }
-  static Color strict(Appearance mode) {
+  static Color streak(Appearance mode) {
     switch (mode) {
       case Appearance.light: return const Color(0x4D5849E4);
       case Appearance.dark: return const Color(0xFF5F5CB3);
