@@ -5,7 +5,7 @@ enum Appearance {
   dark
 }
 
-class Colors {
+class HarubeeColors {
   static Color mainPrimary(Appearance mode) {
     switch (mode) {
       case Appearance.light: return const Color(0xFF5849E4);
