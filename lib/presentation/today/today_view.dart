@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
+import 'package:harubee/design_system/images/harubee_image.dart';
 
 // * TodayView
 class TodayView extends StatelessWidget {
@@ -138,6 +139,7 @@ class StreakCalender extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Provider
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;
@@ -150,28 +152,51 @@ class StreakCalender extends StatelessWidget {
       },
       child: SizedBox(
         height: 72,
-        child: Row(
-          children: List.generate(flexValues.length * 2 - 1, (index) {
-            if (index.isOdd) {
-              return const SizedBox(width: 8);
-            } else {
-              return Expanded(
-                flex: flexValues[index ~/ 2],
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: HarubeeColor.bgSecondary50(mode),
-                    border: Border.all(
-                      color: index == 2
-                          ? HarubeeColor.mainSecondary(mode)
-                          : Colors.transparent,
-                      width: 2,
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(7, (index) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("19(일)", style: TextStyle()),
+                      Image.asset(
+                        HarubeeImage.hexagonEmptyLight,
+                        width: 23,
+                        height: 23,
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ),
+            Row(
+              children: List.generate(flexValues.length * 2 - 1, (index) {
+                if (index.isOdd) {
+                  return const SizedBox(width: 8);
+                } else {
+                  return Expanded(
+                    flex: flexValues[index ~/ 2],
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: HarubeeColor.bgSecondary50(mode),
+                        border: Border.all(
+                          color: index == 2
+                              ? HarubeeColor.mainSecondary(mode)
+                              : Colors.transparent,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              );
-            }
-          }),
+                  );
+                }
+              }),
+            ),
+          ],
         ),
       ),
     );
