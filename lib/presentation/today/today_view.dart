@@ -154,25 +154,6 @@ class StreakCalender extends StatelessWidget {
         height: 72,
         child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(7, (index) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("19(일)", style: TextStyle()),
-                      Image.asset(
-                        HarubeeImage.hexagonEmptyLight,
-                        width: 23,
-                        height: 23,
-                      ),
-                    ],
-                  );
-                }),
-              ),
-            ),
             Row(
               children: List.generate(flexValues.length * 2 - 1, (index) {
                 if (index.isOdd) {
@@ -194,6 +175,40 @@ class StreakCalender extends StatelessWidget {
                     ),
                   );
                 }
+              }),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: List.generate(7, (index) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                    left: index == 3 ? 20 : 0,
+                    right: index == 3 ? 20 : 0,
+                    top: 10,
+                    bottom: 10,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        index == 3 ? "오늘" : "19(일)",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          height: 1,
+                          color: index == 3
+                              ? HarubeeColor.mainText(mode)
+                              : HarubeeColor.textSecondary(mode),
+                        ),
+                      ),
+                      Image.asset(
+                        HarubeeImage.hexagonEmptyLight,
+                        width: 23,
+                        height: 23,
+                      ),
+                    ],
+                  ),
+                );
               }),
             ),
           ],
