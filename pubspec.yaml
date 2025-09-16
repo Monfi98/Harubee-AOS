@@ -31,19 +31,19 @@ flutter:
       fonts:
         - asset: lib/design_system/fonts/Pretendard-Thin.ttf
           weight: 100
-        - asset: lib/DesignSystem/Fonts/Pretendard-ExtraLight.ttf
+        - asset: lib/design_system/fonts/Pretendard-ExtraLight.ttf
           weight: 200
-        - asset: lib/DesignSystem/Fonts/Pretendard-Light.ttf
+        - asset: lib/design_system/fonts/Pretendard-Light.ttf
           weight: 300
-        - asset: lib/DesignSystem/Fonts/Pretendard-Regular.ttf
+        - asset: lib/design_system/fonts/Pretendard-Regular.ttf
           weight: 400
-        - asset: lib/DesignSystem/Fonts/Pretendard-Medium.ttf
+        - asset: lib/design_system/fonts/Pretendard-Medium.ttf
           weight: 500
-        - asset: lib/DesignSystem/Fonts/Pretendard-SemiBold.ttf
+        - asset: lib/design_system/fonts/Pretendard-SemiBold.ttf
           weight: 600
-        - asset: lib/DesignSystem/Fonts/Pretendard-Bold.ttf
+        - asset: lib/design_system/fonts/Pretendard-Bold.ttf
           weight: 700
-        - asset: lib/DesignSystem/Fonts/Pretendard-ExtraBold.ttf
+        - asset: lib/design_system/fonts/Pretendard-ExtraBold.ttf
           weight: 800
-        - asset: lib/DesignSystem/Fonts/Pretendard-Black.ttf
+        - asset: lib/design_system/fonts/Pretendard-Black.ttf
           weight: 900
