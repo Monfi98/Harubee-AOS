@@ -144,6 +144,10 @@ class StreakCalender extends StatelessWidget {
         ? Appearance.dark
         : Appearance.light;
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final (sidePadding, todayPadding) = (16, 5);
+    final cellWidth = (screenWidth - sidePadding * 2 - todayPadding * 2) / 7;
+
     final flexValues = [3, 1, 3];
 
     return InkWell(
@@ -178,35 +182,37 @@ class StreakCalender extends StatelessWidget {
               }),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(7, (index) {
+                final isToday = index == 3;
+
                 return Padding(
-                  padding: EdgeInsets.only(
-                    left: index == 3 ? 20 : 0,
-                    right: index == 3 ? 20 : 0,
-                    top: 10,
-                    bottom: 10,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isToday ? 5 : 0,
+                    vertical: 10.0,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        index == 3 ? "오늘" : "19(일)",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          height: 1,
-                          color: index == 3
-                              ? HarubeeColor.mainText(mode)
-                              : HarubeeColor.textSecondary(mode),
+                  child: SizedBox(
+                    width: cellWidth,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          isToday ? "오늘" : "19(일)",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            height: 1,
+                            color: isToday
+                                ? HarubeeColor.mainText(mode)
+                                : HarubeeColor.textSecondary(mode),
+                          ),
                         ),
-                      ),
-                      Image.asset(
-                        HarubeeImage.hexagonEmptyLight,
-                        width: 23,
-                        height: 23,
-                      ),
-                    ],
+                        Image.asset(
+                          HarubeeImage.hexagonEmptyLight,
+                          width: 23,
+                          height: 23,
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }),
