@@ -110,7 +110,7 @@ class FooterSection extends StatelessWidget {
             ],
           ),
           SizedBox(height: 8),
-          StreakCalender(),
+          StreakCalendar(),
           SizedBox(height: 16),
           TextButton(
             style: TextButton.styleFrom(
@@ -134,8 +134,8 @@ class FooterSection extends StatelessWidget {
 }
 
 // * StreakCalendar
-class StreakCalender extends StatelessWidget {
-  const StreakCalender({super.key});
+class StreakCalendar extends StatelessWidget {
+  const StreakCalendar({super.key});
 
   @override
   Widget build(BuildContext context) {
