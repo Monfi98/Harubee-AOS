@@ -13,7 +13,6 @@ class TodayView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Provider 도입
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;
@@ -51,7 +50,6 @@ class BackgroundLayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Provider 도입
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;
@@ -68,7 +66,7 @@ class BackgroundLayer extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: [
                 HarubeeColor.mainPrimary(mode),
-                HarubeeColor.mainPrimary(mode).withAlpha(0), // 끝 색상
+                HarubeeColor.mainPrimary(mode).withAlpha(0),
               ],
               stops: [0.6, 1],
             ),
@@ -85,7 +83,6 @@ class Honeycomb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Provider 도입
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;
@@ -194,7 +191,6 @@ class FooterSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Provider 도입
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;
@@ -255,7 +251,6 @@ class StreakCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Provider 도입
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;

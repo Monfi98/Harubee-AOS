@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
+import 'package:harubee/presentation/common/viewmodels/calculator_viewmodel.dart';
 import 'package:harubee/presentation/common/views/calculator_input_view.dart';
 
 class TransactionInputView extends StatelessWidget {
@@ -7,7 +9,6 @@ class TransactionInputView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Provider 도입
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;
@@ -30,7 +31,6 @@ class TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Provider 도입
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;
@@ -80,7 +80,6 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Provider 도입
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;
@@ -134,7 +133,10 @@ class Body extends StatelessWidget {
               ],
             ),
           ),
-          CalculatorInputView(),
+          ChangeNotifierProvider(
+            create: (_) => CalculatorViewModel(),
+            child: CalculatorInputView(),
+          ),
         ],
       ),
     );
@@ -154,7 +156,6 @@ class TransactionInputContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Provider 도입
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;

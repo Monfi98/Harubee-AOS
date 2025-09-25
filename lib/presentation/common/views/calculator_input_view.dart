@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
+import 'package:harubee/presentation/common/viewmodels/calculator_viewmodel.dart';
 
 class CalculatorInputView extends StatelessWidget {
   const CalculatorInputView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Provider 도입
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;
@@ -24,13 +25,25 @@ class CalculatorInputView extends StatelessWidget {
   }
 }
 
-// *AmountDisplay
-class AmountDisplay extends StatelessWidget {
+// * AmountDisplay
+class AmountDisplay extends StatefulWidget {
   const AmountDisplay({super.key});
 
   @override
+  State<AmountDisplay> createState() => _AmountDisplayState();
+}
+
+class _AmountDisplayState extends State<AmountDisplay> {
+  final _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // TODO: Provider 도입
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;
@@ -43,12 +56,36 @@ class AmountDisplay extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "255,000",
-              style: TextStyle(
-                color: HarubeeColor.textPrimary(mode),
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+            Expanded(
+              child: Selector<CalculatorViewModel, String>(
+                selector: (_, vm) => vm.expression,
+                builder: (_, expression, __) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (_scrollController.hasClients) {
+                      _scrollController.jumpTo(
+                        _scrollController.position.maxScrollExtent,
+                      );
+                    }
+                  });
+
+                  return SingleChildScrollView(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Text(
+                          expression,
+                          style: TextStyle(
+                            color: HarubeeColor.textPrimary(mode),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        BlinkingCursor(color: HarubeeColor.mainPrimary(mode)),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
             TextButton(
@@ -61,12 +98,15 @@ class AmountDisplay extends StatelessWidget {
               onPressed: () {
                 debugPrint("완료 버튼");
               },
-              child: Text(
-                "완료",
-                style: TextStyle(
-                  color: HarubeeColor.textPrimary(mode),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text(
+                  "완료",
+                  style: TextStyle(
+                    color: HarubeeColor.textPrimary(mode),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),
@@ -77,7 +117,41 @@ class AmountDisplay extends StatelessWidget {
   }
 }
 
-// *Keypad
+// * BlinkingCursor
+class BlinkingCursor extends StatefulWidget {
+  const BlinkingCursor({super.key, required this.color});
+
+  final Color color;
+
+  @override
+  State<BlinkingCursor> createState() => _BlinkingCursorState();
+}
+
+class _BlinkingCursorState extends State<BlinkingCursor> {
+  bool _visible = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.doWhile(() async {
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (!mounted) return false;
+      setState(() => _visible = !_visible);
+      return true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedOpacity(
+      opacity: _visible ? 1.0 : 0.0,
+      duration: const Duration(milliseconds: 250),
+      child: Container(width: 1.5, height: 16, color: widget.color),
+    );
+  }
+}
+
+// * Keypad
 class Keypad extends StatelessWidget {
   const Keypad({super.key});
 
@@ -126,7 +200,11 @@ class KeypadButton extends StatelessWidget {
       flex: isOperations ? 6 : 5,
       child: text == "backspace"
           ? IconButton(
-              onPressed: () {},
+              padding: EdgeInsets.zero,
+              constraints: BoxConstraints.expand(),
+              onPressed: () {
+                context.read<CalculatorViewModel>().pressKey(text);
+              },
               icon: Icon(
                 CupertinoIcons.delete_left_fill,
                 color: HarubeeColor.mainText(mode),
@@ -148,7 +226,7 @@ class KeypadButton extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                debugPrint(text);
+                context.read<CalculatorViewModel>().pressKey(text);
               },
             ),
     );
