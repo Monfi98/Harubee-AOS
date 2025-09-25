@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
-import 'package:harubee/presentation/common/viewmodels/calculator_viewmodel.dart';
 import 'package:harubee/presentation/common/views/calculator_input_view.dart';
+import 'package:harubee/presentation/common/viewmodels/transaction_input_viewmodel.dart';
 
 class TransactionInputView extends StatelessWidget {
   const TransactionInputView({super.key});
@@ -84,6 +84,8 @@ class Body extends StatelessWidget {
         ? Appearance.dark
         : Appearance.light;
 
+    final transactionInputVM = context.watch<TransactionInputViewmodel>();
+
     return Expanded(
       child: Stack(
         children: [
@@ -96,6 +98,7 @@ class Body extends StatelessWidget {
                   children: [
                     TransactionInputContainer(
                       title: "수입",
+                      amount: transactionInputVM.income,
                       onPressed: () {
                         debugPrint("수입 입력");
                       },
@@ -103,6 +106,7 @@ class Body extends StatelessWidget {
                     SizedBox(width: 9),
                     TransactionInputContainer(
                       title: "지출",
+                      amount: transactionInputVM.expense,
                       onPressed: () {
                         debugPrint("지출 입력");
                       },
@@ -133,9 +137,9 @@ class Body extends StatelessWidget {
               ],
             ),
           ),
-          ChangeNotifierProvider(
-            create: (_) => CalculatorViewModel(),
-            child: CalculatorInputView(),
+          ChangeNotifierProvider.value(
+            value: transactionInputVM.calculatorVM,
+            child: const CalculatorInputView(),
           ),
         ],
       ),
@@ -146,11 +150,13 @@ class Body extends StatelessWidget {
 // TransactionInputContainer
 class TransactionInputContainer extends StatelessWidget {
   final String title;
+  final String amount;
   final VoidCallback onPressed;
 
   const TransactionInputContainer({
     super.key,
     required this.title,
+    required this.amount,
     required this.onPressed,
   });
 
@@ -182,7 +188,7 @@ class TransactionInputContainer extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                "- 원",
+                "$amount 원",
                 style: TextStyle(
                   color: HarubeeColor.textPrimary(mode),
                   fontSize: 18,

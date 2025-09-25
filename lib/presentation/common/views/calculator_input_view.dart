@@ -160,7 +160,7 @@ class Keypad extends StatelessWidget {
     final buttons = [
       ["1", "2", "3", "AC"],
       ["4", "5", "6", "+"],
-      ["7", "8", "9", "−"],
+      ["7", "8", "9", "-"],
       ["0", "00", "000", "backspace"],
     ];
 
@@ -194,7 +194,7 @@ class KeypadButton extends StatelessWidget {
         ? Appearance.dark
         : Appearance.light;
 
-    final isOperations = ["AC", "+", "−", "backspace"].contains(text);
+    final isOperations = ["AC", "+", "-", "backspace"].contains(text);
 
     return Expanded(
       flex: isOperations ? 6 : 5,
@@ -213,7 +213,7 @@ class KeypadButton extends StatelessWidget {
             )
           : TextButton(
               child: Transform.translate(
-                offset: Offset(0, ["+", "−"].contains(text) ? -6 : 0),
+                offset: Offset(0, ["+", "-"].contains(text) ? -6 : 0),
                 child: Text(
                   text,
                   style: TextStyle(

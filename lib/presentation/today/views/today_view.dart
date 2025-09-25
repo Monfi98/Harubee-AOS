@@ -4,8 +4,10 @@ import 'dart:math';
 
 import 'package:harubee/design_system/colors/harubee_color.dart';
 import 'package:harubee/design_system/images/harubee_image.dart';
+import 'package:harubee/presentation/common/viewmodels/transaction_input_viewmodel.dart';
 import 'package:harubee/presentation/common/views/transaction_input_view.dart';
 import 'package:harubee/presentation/today/widgets/rounded_hexagon_painter.dart';
+import 'package:provider/provider.dart';
 
 // * TodayView
 class TodayView extends StatelessWidget {
@@ -212,7 +214,7 @@ class FooterSection extends StatelessWidget {
                   color: HarubeeColor.textPrimary(mode),
                 ),
               ),
-              Icon(CupertinoIcons.chevron_forward, size: 16),
+              const Icon(CupertinoIcons.chevron_forward, size: 16),
             ],
           ),
           SizedBox(height: 8),
@@ -234,7 +236,10 @@ class FooterSection extends StatelessWidget {
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                 ),
-                builder: (context) => const TransactionInputView(),
+                builder: (context) => ChangeNotifierProvider(
+                  create: (_) => TransactionInputViewmodel(),
+                  child: const TransactionInputView(),
+                ),
               );
             },
             child: Text("실제 지출 및 수입 입력하기"),

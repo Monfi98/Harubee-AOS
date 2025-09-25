@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 extension ExpressionFormat on String {
   String get formattedExpression {
     final formatter = NumberFormat('#,###');
-    final regex = RegExp(r'(\+|−)');
+    final regex = RegExp(r'(\+|-)');
 
     return splitMapJoin(
       regex,

@@ -10,37 +10,41 @@ class CalculatorViewModel extends ChangeNotifier {
   // Internal Variable
   String _expression = "";
   String _result = "";
-  String get _previousKey => _expression[_expression.length - 1];
+  String? get _lastKey =>
+      _expression.isEmpty ? null : _expression[_expression.length - 1];
+  final _operators = ["+", "-"];
 
   void pressKey(String currentKey) {
     switch (currentKey) {
       case var key when (key.isNumeric):
-        final isZero = 0 == int.parse(currentKey);
-        if ((_expression.isEmpty || ["+", "−"].contains(_previousKey)) &&
-            isZero) {
-          return;
-        }
         _expression += currentKey;
-        _result = eval(_expression).toString();
-        break;
-
-      case "AC":
-        _expression = "";
-        break;
-
       case "+":
-      case "−":
-        if (_expression.isEmpty || ["+", "−"].contains(_previousKey)) {
+      case "-":
+        if (_expression.isEmpty || _operators.contains(_lastKey)) {
           return;
         }
         _expression += currentKey;
+        break;
+      case "AC":
+        _expression = "0";
+        break;
 
       case "backspace":
         if (_expression.isEmpty) {
           return;
         }
-        _expression = _expression.substring(0, _expression.length - 1);
+        if (_expression.length <= 1) {
+          _expression = "0";
+        } else {
+          _expression = _expression.substring(0, _expression.length - 1);
+        }
         break;
+    }
+
+    if (_operators.contains(_lastKey)) {
+      _result = eval('${_expression}0').toString();
+    } else {
+      _result = eval(_expression).toString();
     }
     notifyListeners();
   }
