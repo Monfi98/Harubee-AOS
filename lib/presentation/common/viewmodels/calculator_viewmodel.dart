@@ -18,6 +18,7 @@ class CalculatorViewModel extends ChangeNotifier {
     switch (currentKey) {
       case var key when (key.isNumeric):
         _expression += currentKey;
+
       case "+":
       case "-":
         if (_expression.isEmpty || _operators.contains(_lastKey)) {
@@ -25,14 +26,14 @@ class CalculatorViewModel extends ChangeNotifier {
         }
         _expression += currentKey;
         break;
+
       case "AC":
         _expression = "0";
         break;
 
       case "backspace":
-        if (_expression.isEmpty) {
-          return;
-        }
+        if (_expression.isEmpty) return;
+
         if (_expression.length <= 1) {
           _expression = "0";
         } else {
@@ -41,11 +42,20 @@ class CalculatorViewModel extends ChangeNotifier {
         break;
     }
 
-    if (_operators.contains(_lastKey)) {
-      _result = eval('${_expression}0').toString();
-    } else {
-      _result = eval(_expression).toString();
-    }
+    _result = _calculateExpression(_expression).toString();
     notifyListeners();
+  }
+
+  int _calculateExpression(String expression) {
+    if (_operators.contains(_lastKey)) {
+      expression += "0";
+    }
+    // TODO: Int 범위 넘어갈때 처리 필요
+    try {
+      return eval(expression);
+    } catch (error) {
+      debugPrint("Overflow or invalid expression: $error");
+      return 999999999999999999;
+    }
   }
 }

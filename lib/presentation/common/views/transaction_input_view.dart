@@ -85,6 +85,7 @@ class Body extends StatelessWidget {
         : Appearance.light;
 
     final transactionInputVM = context.watch<TransactionInputViewmodel>();
+    final currentType = transactionInputVM.selectedType;
 
     return Expanded(
       child: Stack(
@@ -99,16 +100,26 @@ class Body extends StatelessWidget {
                     TransactionInputContainer(
                       title: "수입",
                       amount: transactionInputVM.income,
+                      selected:
+                          TransactionType.income ==
+                          transactionInputVM.selectedType,
                       onPressed: () {
-                        debugPrint("수입 입력");
+                        context
+                            .read<TransactionInputViewmodel>()
+                            .tapTransactionContainer(TransactionType.income);
                       },
                     ),
                     SizedBox(width: 9),
                     TransactionInputContainer(
                       title: "지출",
                       amount: transactionInputVM.expense,
+                      selected:
+                          TransactionType.expense ==
+                          transactionInputVM.selectedType,
                       onPressed: () {
-                        debugPrint("지출 입력");
+                        context
+                            .read<TransactionInputViewmodel>()
+                            .tapTransactionContainer(TransactionType.expense);
                       },
                     ),
                   ],
@@ -138,7 +149,9 @@ class Body extends StatelessWidget {
             ),
           ),
           ChangeNotifierProvider.value(
-            value: transactionInputVM.calculatorVM,
+            value: currentType == TransactionType.expense
+                ? transactionInputVM.expenseCalculatorVM
+                : transactionInputVM.incomeCalculatorVM,
             child: const CalculatorInputView(),
           ),
         ],
@@ -151,12 +164,14 @@ class Body extends StatelessWidget {
 class TransactionInputContainer extends StatelessWidget {
   final String title;
   final String amount;
+  final bool selected;
   final VoidCallback onPressed;
 
   const TransactionInputContainer({
     super.key,
     required this.title,
     required this.amount,
+    required this.selected,
     required this.onPressed,
   });
 
@@ -167,36 +182,49 @@ class TransactionInputContainer extends StatelessWidget {
         : Appearance.light;
 
     return Expanded(
-      child: Container(
-        padding: EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: HarubeeColor.bgSecondary(mode),
-          border: Border.all(color: HarubeeColor.mainSecondary(mode), width: 1),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                color: HarubeeColor.textPrimary(mode),
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          height: 84,
+          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 14),
+          decoration: BoxDecoration(
+            color: HarubeeColor.bgSecondary(mode),
+            border: Border.all(
+              color: selected
+                  ? HarubeeColor.mainSecondary(mode)
+                  : Colors.transparent,
+              width: 1.5,
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                "$amount 원",
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
                 style: TextStyle(
                   color: HarubeeColor.textPrimary(mode),
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.centerRight,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    "$amount 원",
+                    style: TextStyle(
+                      color: HarubeeColor.textPrimary(mode),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
