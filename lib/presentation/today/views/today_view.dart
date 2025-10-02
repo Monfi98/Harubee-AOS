@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
+import 'package:harubee/core/navigation/app_route.dart';
 import 'dart:math';
-
 import 'package:harubee/design_system/colors/harubee_color.dart';
 import 'package:harubee/design_system/images/harubee_image.dart';
-import 'package:harubee/presentation/common/viewmodels/transaction_input_viewmodel.dart';
-import 'package:harubee/presentation/common/views/transaction_input_view.dart';
 import 'package:harubee/presentation/today/widgets/rounded_hexagon_painter.dart';
-import 'package:provider/provider.dart';
 
 // * TodayView
 class TodayView extends StatelessWidget {
@@ -230,19 +228,7 @@ class FooterSection extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
             ),
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                ),
-                builder: (context) => ChangeNotifierProvider(
-                  create: (_) => TransactionInputViewmodel(),
-                  child: const TransactionInputView(),
-                ),
-              );
-            },
+            onPressed: () => context.go(AppRoute.transactionInput.path),
             child: Text("실제 지출 및 수입 입력하기"),
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
 import 'package:harubee/presentation/common/views/calculator_view.dart';
@@ -42,7 +43,7 @@ class TopBar extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              context.pop();
             },
             style: TextButton.styleFrom(
               padding: EdgeInsets.zero,
