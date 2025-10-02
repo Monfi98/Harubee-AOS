@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:harubee/presentation/common/widgets/bottom_button.dart';
 import 'package:provider/provider.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
 import 'package:harubee/presentation/common/views/calculator_view.dart';
@@ -123,23 +124,11 @@ class Body extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 42),
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      minimumSize: Size.fromHeight(60),
-                      backgroundColor: HarubeeColor.mainPrimary(mode),
-                      foregroundColor: HarubeeColor.textFixed,
-                      textStyle: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                    ),
-                    onPressed: () {
-                      debugPrint("");
-                    },
-                    child: Text("저장하기"),
+                  child: BottomButton(
+                    label: "저장하기",
+                    backgroundColor: HarubeeColor.mainPrimary(mode),
+                    foregroundColor: HarubeeColor.textFixed,
+                    onPressed: () => context.pop(),
                   ),
                 ),
               ],

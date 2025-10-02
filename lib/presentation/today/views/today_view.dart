@@ -5,6 +5,7 @@ import 'package:harubee/core/navigation/app_route.dart';
 import 'dart:math';
 import 'package:harubee/design_system/colors/harubee_color.dart';
 import 'package:harubee/design_system/images/harubee_image.dart';
+import 'package:harubee/presentation/common/widgets/bottom_button.dart';
 import 'package:harubee/presentation/today/widgets/rounded_hexagon_painter.dart';
 
 // * TodayView
@@ -218,18 +219,11 @@ class FooterSection extends StatelessWidget {
           SizedBox(height: 8),
           StreakCalendar(),
           SizedBox(height: 16),
-          TextButton(
-            style: TextButton.styleFrom(
-              minimumSize: Size.fromHeight(60),
-              backgroundColor: HarubeeColor.mainPrimary(mode),
-              foregroundColor: HarubeeColor.textFixed,
-              textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-            ),
+          BottomButton(
+            label: "실제 지출 및 수입 입력하기",
+            backgroundColor: HarubeeColor.mainPrimary(mode),
+            foregroundColor: HarubeeColor.textFixed,
             onPressed: () => context.go(AppRoute.transactionInput.path),
-            child: Text("실제 지출 및 수입 입력하기"),
           ),
         ],
       ),
@@ -254,9 +248,7 @@ class StreakCalendar extends StatelessWidget {
     final flexValues = [3, 1, 3];
 
     return InkWell(
-      onTap: () {
-        debugPrint("Streak Tapped!");
-      },
+      onTap: () => context.push(AppRoute.calendar.path),
       child: SizedBox(
         height: 72,
         child: Stack(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harubee/core/util/string_extension.dart';
+import 'package:harubee/core/utils/string_extension.dart';
 import 'package:dart_eval/dart_eval.dart';
 
 class CalculatorViewModel extends ChangeNotifier {

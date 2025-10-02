@@ -11,6 +11,10 @@ final GoRouter router = GoRouter(
           path: AppRoute.transactionInput.path,
           pageBuilder: (_, _) => AppRoute.transactionInput.buildPage(),
         ),
+        GoRoute(
+          path: AppRoute.calendar.path,
+          pageBuilder: (_, _) => AppRoute.calendar.buildPage(),
+        ),
       ],
     ),
   ],

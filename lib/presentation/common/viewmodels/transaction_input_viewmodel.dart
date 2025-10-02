@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:harubee/core/util/string_extension.dart';
+import 'package:harubee/core/utils/string_extension.dart';
 import 'package:harubee/presentation/common/viewmodels/calculator_viewmodel.dart';
 
 enum TransactionType { income, expense, none }
