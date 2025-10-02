@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:harubee/helper/string_extension.dart';
 import 'package:harubee/presentation/common/viewmodels/calculator_viewmodel.dart';
 
-enum TransactionType { income, expense }
+enum TransactionType { income, expense, none }
 
 class TransactionInputViewmodel extends ChangeNotifier {
   // State
@@ -16,14 +16,12 @@ class TransactionInputViewmodel extends ChangeNotifier {
   String? _expense;
   TransactionType _selectedType = TransactionType.expense;
 
-  final incomeCalculatorVM = CalculatorViewModel();
-  final expenseCalculatorVM = CalculatorViewModel();
-
-  // intialize
+  // Intialize
   TransactionInputViewmodel() {
-    _setupCalculatorListener();
+    _setupCalculatorVM();
   }
 
+  // Action
   void tapTransactionContainer(TransactionType type) {
     switch (type) {
       case TransactionType.income:
@@ -32,11 +30,17 @@ class TransactionInputViewmodel extends ChangeNotifier {
       case TransactionType.expense:
         _selectedType = TransactionType.expense;
         break;
+      default:
+        break;
     }
     notifyListeners();
   }
 
-  void _setupCalculatorListener() {
+  // NestedViewModel: Calculator ViewModel
+  final incomeCalculatorVM = CalculatorViewModel();
+  final expenseCalculatorVM = CalculatorViewModel();
+
+  void _setupCalculatorVM() {
     incomeCalculatorVM.addListener(() {
       _income = incomeCalculatorVM.result;
       notifyListeners();
@@ -46,6 +50,16 @@ class TransactionInputViewmodel extends ChangeNotifier {
       _expense = expenseCalculatorVM.result;
       notifyListeners();
     });
+
+    expenseCalculatorVM.onComplete = () {
+      _selectedType = TransactionType.none;
+      notifyListeners();
+    };
+
+    incomeCalculatorVM.onComplete = () {
+      _selectedType = TransactionType.none;
+      notifyListeners();
+    };
   }
 
   @override

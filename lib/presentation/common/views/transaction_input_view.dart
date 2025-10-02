@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
-import 'package:harubee/presentation/common/views/calculator_input_view.dart';
+import 'package:harubee/presentation/common/views/calculator_view.dart';
 import 'package:harubee/presentation/common/viewmodels/transaction_input_viewmodel.dart';
 
 class TransactionInputView extends StatelessWidget {
@@ -14,7 +14,7 @@ class TransactionInputView extends StatelessWidget {
         : Appearance.light;
 
     return Container(
-      width: double.infinity,
+      height: 623,
       padding: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -100,9 +100,7 @@ class Body extends StatelessWidget {
                     TransactionInputContainer(
                       title: "수입",
                       amount: transactionInputVM.income,
-                      selected:
-                          TransactionType.income ==
-                          transactionInputVM.selectedType,
+                      selected: TransactionType.income == currentType,
                       onPressed: () {
                         context
                             .read<TransactionInputViewmodel>()
@@ -113,9 +111,7 @@ class Body extends StatelessWidget {
                     TransactionInputContainer(
                       title: "지출",
                       amount: transactionInputVM.expense,
-                      selected:
-                          TransactionType.expense ==
-                          transactionInputVM.selectedType,
+                      selected: TransactionType.expense == currentType,
                       onPressed: () {
                         context
                             .read<TransactionInputViewmodel>()
@@ -148,12 +144,13 @@ class Body extends StatelessWidget {
               ],
             ),
           ),
-          ChangeNotifierProvider.value(
-            value: currentType == TransactionType.expense
-                ? transactionInputVM.expenseCalculatorVM
-                : transactionInputVM.incomeCalculatorVM,
-            child: const CalculatorInputView(),
-          ),
+          if (currentType != TransactionType.none)
+            ChangeNotifierProvider.value(
+              value: currentType == TransactionType.expense
+                  ? transactionInputVM.expenseCalculatorVM
+                  : transactionInputVM.incomeCalculatorVM,
+              child: const CalculatorView(),
+            ),
         ],
       ),
     );

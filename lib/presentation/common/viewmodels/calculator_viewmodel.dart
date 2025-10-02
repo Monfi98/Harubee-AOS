@@ -14,6 +14,9 @@ class CalculatorViewModel extends ChangeNotifier {
       _expression.isEmpty ? null : _expression[_expression.length - 1];
   final _operators = ["+", "-"];
 
+  // call back
+  VoidCallback? onComplete;
+
   void pressKey(String currentKey) {
     switch (currentKey) {
       case var key when (key.isNumeric):
@@ -43,6 +46,11 @@ class CalculatorViewModel extends ChangeNotifier {
     }
 
     _result = _calculateExpression(_expression).toString();
+    notifyListeners();
+  }
+
+  void submitComplete() {
+    onComplete?.call();
     notifyListeners();
   }
 

@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
 import 'package:harubee/presentation/common/viewmodels/calculator_viewmodel.dart';
 
-class CalculatorInputView extends StatelessWidget {
-  const CalculatorInputView({super.key});
+class CalculatorView extends StatelessWidget {
+  const CalculatorView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +96,7 @@ class _AmountDisplayState extends State<AmountDisplay> {
                 overlayColor: Colors.transparent,
               ),
               onPressed: () {
-                debugPrint("완료 버튼");
+                context.read<CalculatorViewModel>().submitComplete();
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 16.0),
