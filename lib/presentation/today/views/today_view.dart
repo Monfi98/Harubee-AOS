@@ -202,21 +202,6 @@ class FooterSection extends StatelessWidget {
       color: HarubeeColor.mainBgPrimary(mode),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "캘린더",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: HarubeeColor.textPrimary(mode),
-                ),
-              ),
-              const Icon(CupertinoIcons.chevron_forward, size: 16),
-            ],
-          ),
-          SizedBox(height: 8),
           StreakCalendar(),
           SizedBox(height: 16),
           BottomButton(
@@ -248,72 +233,91 @@ class StreakCalendar extends StatelessWidget {
     final flexValues = [3, 1, 3];
 
     return InkWell(
-      onTap: () => context.push(AppRoute.calendar.path),
-      child: SizedBox(
-        height: 72,
-        child: Stack(
-          children: [
-            Row(
-              children: List.generate(flexValues.length * 2 - 1, (index) {
-                if (index.isOdd) {
-                  return const SizedBox(width: 8);
-                } else {
-                  return Expanded(
-                    flex: flexValues[index ~/ 2],
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: HarubeeColor.bgSecondary50(mode),
-                        border: Border.all(
-                          color: index == 2
-                              ? HarubeeColor.mainSecondary(mode)
-                              : Colors.transparent,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  );
-                }
-              }),
-            ),
-            Row(
-              children: List.generate(7, (index) {
-                final isToday = index == 3;
-
-                return Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: isToday ? 5 : 0,
-                    vertical: 10.0,
-                  ),
-                  child: SizedBox(
-                    width: cellWidth,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          isToday ? "오늘" : "19(일)",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            height: 1,
-                            color: isToday
-                                ? HarubeeColor.mainText(mode)
-                                : HarubeeColor.textSecondary(mode),
+      onTap: () => context.go(AppRoute.calendar.path),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "캘린더",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: HarubeeColor.textPrimary(mode),
+                ),
+              ),
+              const Icon(CupertinoIcons.chevron_forward, size: 16),
+            ],
+          ),
+          SizedBox(height: 8),
+          SizedBox(
+            height: 72,
+            child: Stack(
+              children: [
+                Row(
+                  children: List.generate(flexValues.length * 2 - 1, (index) {
+                    if (index.isOdd) {
+                      return const SizedBox(width: 8);
+                    } else {
+                      return Expanded(
+                        flex: flexValues[index ~/ 2],
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: HarubeeColor.bgSecondary50(mode),
+                            border: Border.all(
+                              color: index == 2
+                                  ? HarubeeColor.mainSecondary(mode)
+                                  : Colors.transparent,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        Image.asset(
-                          HarubeeImage.hexagonEmptyLight,
-                          width: 23,
-                          height: 23,
+                      );
+                    }
+                  }),
+                ),
+                Row(
+                  children: List.generate(7, (index) {
+                    final isToday = index == 3;
+
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isToday ? 5 : 0,
+                        vertical: 10.0,
+                      ),
+                      child: SizedBox(
+                        width: cellWidth,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              isToday ? "오늘" : "19(일)",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                height: 1,
+                                color: isToday
+                                    ? HarubeeColor.mainText(mode)
+                                    : HarubeeColor.textSecondary(mode),
+                              ),
+                            ),
+                            Image.asset(
+                              HarubeeImage.hexagonEmptyLight,
+                              width: 23,
+                              height: 23,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                );
-              }),
+                      ),
+                    );
+                  }),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

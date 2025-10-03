@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:harubee/core/navigation/modal_page.dart';
+import 'package:harubee/presentation/calendar/viewmodels/calendar_viewmodel.dart';
 import 'package:harubee/presentation/calendar/views/calendar_view.dart';
 import 'package:harubee/presentation/common/viewmodels/transaction_input_viewmodel.dart';
 import 'package:harubee/presentation/common/views/transaction_input_view.dart';
@@ -35,7 +36,12 @@ extension AppRouteExt on AppRoute {
         );
 
       case AppRoute.calendar:
-        return const CupertinoPage(child: CalendarView());
+        return CupertinoPage(
+          child: ChangeNotifierProvider(
+            create: (_) => CalendarViewModel(),
+            child: CalendarView(),
+          ),
+        );
     }
   }
 }
