@@ -118,7 +118,9 @@ class CalendarSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [CalendarHeader(), CalendarBody()]);
+    return Expanded(
+      child: Column(children: [CalendarHeader(), CalendarBody()]),
+    );
   }
 }
 
@@ -167,45 +169,55 @@ class CalendarBody extends StatelessWidget {
         ? Appearance.dark
         : Appearance.light;
     final calendarVM = context.watch<CalendarViewModel>();
+    final calendarColCount = (calendarVM.calendarDays.length / 7)
+        .ceil()
+        .toInt();
+    const cellHeight = 106.0;
 
-    return Container(
-      color: HarubeeColor.bgPrimary(mode),
-      child: Stack(
-        children: [
-          Column(
-            children: List.generate(
-              4,
-              (_) => Padding(
-                padding: const EdgeInsets.only(top: 106.0),
-                child: Divider(
-                  height: 1,
-                  color: HarubeeColor.textPrimary10(mode),
+    return Expanded(
+      child: Container(
+        color: HarubeeColor.bgPrimary(mode),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Stack(
+            children: [
+              Column(
+                children: List.generate(
+                  calendarColCount - 1,
+                  (_) => Padding(
+                    padding: const EdgeInsets.only(top: cellHeight),
+                    child: Divider(
+                      height: 1,
+                      color: HarubeeColor.textPrimary10(mode),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 13.0),
-            child: Table(
-              children: List.generate(5, (weekIndex) {
-                return TableRow(
-                  children: List.generate(7, (dayIndex) {
-                    final index = weekIndex * 7 + dayIndex;
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                child: Table(
+                  children: List.generate(calendarColCount, (weekIndex) {
+                    return TableRow(
+                      children: List.generate(7, (dayIndex) {
+                        final index = weekIndex * 7 + dayIndex;
 
-                    if (calendarVM.calendarDays.length <= index ||
-                        calendarVM.calendarDays[index] == null) {
-                      return SizedBox(height: 106);
-                    } else {
-                      return CalendarCell(
-                        dayCell: calendarVM.calendarDays[index]!,
-                      );
-                    }
+                        if (calendarVM.calendarDays.length <= index ||
+                            calendarVM.calendarDays[index] == null) {
+                          return SizedBox(height: cellHeight);
+                        } else {
+                          return CalendarCell(
+                            cellHeight: cellHeight,
+                            dayCell: calendarVM.calendarDays[index]!,
+                          );
+                        }
+                      }),
+                    );
                   }),
-                );
-              }),
-            ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -213,9 +225,14 @@ class CalendarBody extends StatelessWidget {
 
 // CalendarCell
 class CalendarCell extends StatelessWidget {
+  final double cellHeight;
   final DayCell dayCell;
 
-  const CalendarCell({super.key, required this.dayCell});
+  const CalendarCell({
+    super.key,
+    required this.cellHeight,
+    required this.dayCell,
+  });
 
   String? get hexagonImage {
     switch (dayCell.hexagonType) {
@@ -246,11 +263,12 @@ class CalendarCell extends StatelessWidget {
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;
+    const verticalPadding = 8.0;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: verticalPadding),
       child: Container(
-        height: 90,
+        height: cellHeight - verticalPadding * 2,
         decoration: BoxDecoration(
           color: dayCell.isToday
               ? HarubeeColor.bgSecondary50(mode)

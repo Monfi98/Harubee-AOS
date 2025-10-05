@@ -37,7 +37,7 @@ class CalendarViewModel extends ChangeNotifier {
       balance: 1000000,
       defaultHarubee: 25000,
       dailyBudgets: List.generate(
-        34,
+        50,
         (i) => DailyBudget(
           date: DateTime(2024, 9, 19 + i),
           harubee: 20000,
@@ -74,9 +74,12 @@ class CalendarViewModel extends ChangeNotifier {
           e.expense,
           e.income,
         );
+        final day = e.date.day == 1
+            ? "${e.date.month}/1"
+            : e.date.day.toString();
 
         return DayCell(
-          day: e.date.day,
+          day: day,
           hexagonType: hexagonType,
           amount: amount,
           amountState: state,
