@@ -71,7 +71,7 @@ class TopSection extends StatelessWidget {
             Transform.translate(
               offset: const Offset(0, 8),
               child: Text(
-                calendarVM.currentYear,
+                "${calendarVM.currentYear}년",
                 style: TextStyle(
                   color: HarubeeColor.textFixed,
                   fontSize: 14,
@@ -169,9 +169,6 @@ class CalendarBody extends StatelessWidget {
         ? Appearance.dark
         : Appearance.light;
     final calendarVM = context.watch<CalendarViewModel>();
-    final calendarColCount = (calendarVM.calendarDays.length / 7)
-        .ceil()
-        .toInt();
     const cellHeight = 106.0;
 
     return Expanded(
@@ -183,7 +180,7 @@ class CalendarBody extends StatelessWidget {
             children: [
               Column(
                 children: List.generate(
-                  calendarColCount - 1,
+                  calendarVM.calendarColCount - 1,
                   (_) => Padding(
                     padding: const EdgeInsets.only(top: cellHeight),
                     child: Divider(
@@ -196,7 +193,9 @@ class CalendarBody extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 13.0),
                 child: Table(
-                  children: List.generate(calendarColCount, (weekIndex) {
+                  children: List.generate(calendarVM.calendarColCount, (
+                    weekIndex,
+                  ) {
                     return TableRow(
                       children: List.generate(7, (dayIndex) {
                         final index = weekIndex * 7 + dayIndex;

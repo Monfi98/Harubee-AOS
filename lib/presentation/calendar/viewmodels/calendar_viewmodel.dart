@@ -1,20 +1,21 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:harubee/core/utils/datetime_extension.dart';
 import 'package:harubee/domain/models/daily_budget.dart';
 import 'package:harubee/domain/models/salary_budget.dart';
 import 'package:harubee/presentation/calendar/models/day_cell.dart';
 
 class CalendarViewModel extends ChangeNotifier {
   // State
-  String get currentYear => "2024년";
-  String get startDate => "09/19";
-  String get endDate => "10/18";
-  String get todayDate => "";
+  String get currentYear => _currSalaryBudget?.startDate.year.toString() ?? "";
+  String get startDate =>
+      _currSalaryBudget?.startDate.formatted(DateFormatStyle.monthDay) ?? "";
+  String get endDate =>
+      _currSalaryBudget?.endDate.formatted(DateFormatStyle.monthDay) ?? "";
   List<DayCell?> get calendarDays => _calendarDays;
+  int get calendarColCount => (_calendarDays.length / 7).ceil().toInt();
 
   // internal variable
-  DateTime _todayDate = DateTime.now();
+  final DateTime _todayDate = DateTime.now();
   SalaryBudget? _prevSalaryBudget;
   SalaryBudget? _currSalaryBudget;
   SalaryBudget? _nextSalaryBudget;
@@ -156,18 +157,3 @@ class CalendarViewModel extends ChangeNotifier {
     return (0, AmountState.normal);
   }
 }
-
-
-// amount -> inactive
-// 0(임의의 0)
-// - 오늘을 포함한 과거일 경우 &&
-//    - 수입만 입력했을 경우
-//    - 입력 안했을 경우 
-
-// 하루비로 표시 -> active, normal
-// - 오늘을 포함한 미래일경우 &&
-//    - 실제 지출을 입력안했을 경우 
-
-// 실제 지출로 표시 -> inactive
-// - 오늘을 포함 과거일 경우 &&
-// - 실제 지출로 표시

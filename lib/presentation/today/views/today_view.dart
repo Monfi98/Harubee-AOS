@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harubee/core/navigation/app_route.dart';
+import 'package:harubee/core/utils/datetime_extension.dart';
 import 'dart:math';
 import 'package:harubee/design_system/colors/harubee_color.dart';
 import 'package:harubee/design_system/images/harubee_image.dart';
@@ -171,7 +172,7 @@ class ForegroundLayer extends StatelessWidget {
             top: statusBarHeight + appBarHeight,
           ),
           child: Text(
-            "2024년 9월 24일 (수)",
+            DateTime.now().formatted(DateFormatStyle.koreanFullDate),
             textAlign: TextAlign.right,
             style: TextStyle(
               fontSize: 14,
