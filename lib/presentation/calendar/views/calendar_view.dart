@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:harubee/core/utils/string_extension.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
+import 'package:harubee/design_system/images/harubee_image.dart';
+import 'package:harubee/presentation/calendar/models/day_cell.dart';
 import 'package:harubee/presentation/calendar/viewmodels/calendar_viewmodel.dart';
 import 'package:harubee/presentation/common/widgets/navigation_back_button.dart';
 import 'package:provider/provider.dart';
@@ -16,9 +19,9 @@ class CalendarView extends StatelessWidget {
         : Appearance.light;
 
     return Scaffold(
-      backgroundColor: HarubeeColor.mainPrimary(mode),
+      backgroundColor: HarubeeColor.bgPrimary(mode),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: HarubeeColor.bgAccent(mode),
         title: Text(
           "캘린더",
           style: TextStyle(
@@ -43,69 +46,85 @@ class CalendarView extends StatelessWidget {
           ),
         ],
       ),
-      body: const Column(children: [Header(), Calendar()]),
+      body: const Column(children: [TopSection(), CalendarSection()]),
     );
   }
 }
 
-// Header
-class Header extends StatelessWidget {
-  const Header({super.key});
+// TopSection
+class TopSection extends StatelessWidget {
+  const TopSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final mode = Theme.of(context).brightness == Brightness.dark
+        ? Appearance.dark
+        : Appearance.light;
     final calendarVM = context.watch<CalendarViewModel>();
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Column(
-        children: [
-          Transform.translate(
-            offset: const Offset(0, 8),
-            child: Text(
-              calendarVM.currentYear,
-              style: TextStyle(
-                color: HarubeeColor.textFixed,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () => {},
-                icon: Icon(CupertinoIcons.chevron_left, size: 20),
-                color: HarubeeColor.textFixed,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  "${calendarVM.startDate} - ${calendarVM.endDate}",
-                  style: TextStyle(
-                    color: HarubeeColor.textFixed,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  ),
+    return Container(
+      color: HarubeeColor.bgAccent(mode),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Column(
+          children: [
+            Transform.translate(
+              offset: const Offset(0, 8),
+              child: Text(
+                calendarVM.currentYear,
+                style: TextStyle(
+                  color: HarubeeColor.textFixed,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              IconButton(
-                onPressed: () => {},
-                icon: Icon(CupertinoIcons.chevron_right, size: 20),
-                color: HarubeeColor.textFixed,
-              ),
-            ],
-          ),
-        ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () => {},
+                  icon: Icon(CupertinoIcons.chevron_left, size: 20),
+                  color: HarubeeColor.textFixed,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text(
+                    "${calendarVM.startDate} - ${calendarVM.endDate}",
+                    style: TextStyle(
+                      color: HarubeeColor.textFixed,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => {},
+                  icon: Icon(CupertinoIcons.chevron_right, size: 20),
+                  color: HarubeeColor.textFixed,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-// Calendar
-class Calendar extends StatelessWidget {
-  const Calendar({super.key});
+// CalendarSection
+class CalendarSection extends StatelessWidget {
+  const CalendarSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [CalendarHeader(), CalendarBody()]);
+  }
+}
+
+// CalendarHeader
+class CalendarHeader extends StatelessWidget {
+  const CalendarHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -114,34 +133,159 @@ class Calendar extends StatelessWidget {
         : Appearance.light;
     const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 6.0),
-      child: Column(
+    return Container(
+      color: HarubeeColor.bgAccent(mode),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 4),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: weekDays
+              .map(
+                (day) => Text(
+                  day,
+                  style: TextStyle(
+                    color: HarubeeColor.textFixed,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
+  }
+}
+
+// CalendarBody
+class CalendarBody extends StatelessWidget {
+  const CalendarBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final mode = Theme.of(context).brightness == Brightness.dark
+        ? Appearance.dark
+        : Appearance.light;
+    final calendarVM = context.watch<CalendarViewModel>();
+
+    return Container(
+      color: HarubeeColor.bgPrimary(mode),
+      child: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: weekDays
-                  .map(
-                    (day) => Text(
-                      day,
-                      style: TextStyle(
-                        color: HarubeeColor.textFixed,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  )
-                  .toList(),
+          Column(
+            children: List.generate(
+              4,
+              (_) => Padding(
+                padding: const EdgeInsets.only(top: 106.0),
+                child: Divider(
+                  height: 1,
+                  color: HarubeeColor.textPrimary10(mode),
+                ),
+              ),
             ),
           ),
-          SizedBox(height: 4),
-          Container(
-            color: HarubeeColor.bgPrimary(mode),
-            child: Column(children: [Text("helloojkljl;j;ljkl;jlkjlk")]),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 13.0),
+            child: Table(
+              children: List.generate(5, (weekIndex) {
+                return TableRow(
+                  children: List.generate(7, (dayIndex) {
+                    final index = weekIndex * 7 + dayIndex;
+
+                    if (calendarVM.calendarDays.length <= index ||
+                        calendarVM.calendarDays[index] == null) {
+                      return SizedBox(height: 106);
+                    } else {
+                      return CalendarCell(
+                        dayCell: calendarVM.calendarDays[index]!,
+                      );
+                    }
+                  }),
+                );
+              }),
+            ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// CalendarCell
+class CalendarCell extends StatelessWidget {
+  final DayCell dayCell;
+
+  const CalendarCell({super.key, required this.dayCell});
+
+  String? get hexagonImage {
+    switch (dayCell.hexagonType) {
+      case HexagonType.blue:
+        return HarubeeImage.hexagonBlueLight;
+      case HexagonType.red:
+        return HarubeeImage.hexagonRedLight;
+      case HexagonType.empty:
+        return HarubeeImage.hexagonEmptyLight;
+      case HexagonType.none:
+        return null;
+    }
+  }
+
+  Color get amountColor {
+    switch (dayCell.amountState) {
+      case AmountState.active:
+        return HarubeeColor.mainText(Appearance.light);
+      case AmountState.inactive:
+        return HarubeeColor.textTertiary(Appearance.light);
+      case AmountState.normal:
+        return HarubeeColor.textPrimary(Appearance.light);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mode = Theme.of(context).brightness == Brightness.dark
+        ? Appearance.dark
+        : Appearance.light;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        height: 90,
+        decoration: BoxDecoration(
+          color: dayCell.isToday
+              ? HarubeeColor.bgSecondary50(mode)
+              : Colors.transparent,
+          border: Border.all(
+            color: dayCell.isToday
+                ? HarubeeColor.mainSecondary(mode)
+                : Colors.transparent,
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              dayCell.day.toString(),
+              style: TextStyle(
+                color: HarubeeColor.textPrimary(mode),
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            if (hexagonImage != null)
+              Image.asset(hexagonImage!, width: 23, height: 23),
+            Text(
+              dayCell.amount.toString().formattedExpression,
+              style: TextStyle(
+                color: amountColor,
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
