@@ -14,6 +14,13 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: AppRoute.calendar.path,
           pageBuilder: (_, _) => AppRoute.calendar.buildPage(),
+          routes: [
+            GoRoute(
+              path: AppRoute.dayDetail.path,
+              pageBuilder: (_, state) =>
+                  AppRoute.dayDetail.buildPage(extra: state.extra),
+            ),
+          ],
         ),
       ],
     ),

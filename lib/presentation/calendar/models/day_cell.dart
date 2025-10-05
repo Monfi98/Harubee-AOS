@@ -1,5 +1,5 @@
 class DayCell {
-  String day;
+  DateTime day;
   HexagonType hexagonType;
   int amount;
   AmountState amountState;

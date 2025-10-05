@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:harubee/core/navigation/app_route.dart';
 import 'package:harubee/core/utils/string_extension.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
 import 'package:harubee/design_system/images/harubee_image.dart';
@@ -262,46 +263,53 @@ class CalendarCell extends StatelessWidget {
     final mode = Theme.of(context).brightness == Brightness.dark
         ? Appearance.dark
         : Appearance.light;
+    final dayText = dayCell.day.day == 1
+        ? "${dayCell.day.month}/1"
+        : dayCell.day.day.toString();
     const verticalPadding = 8.0;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: verticalPadding),
-      child: Container(
-        height: cellHeight - verticalPadding * 2,
-        decoration: BoxDecoration(
-          color: dayCell.isToday
-              ? HarubeeColor.bgSecondary50(mode)
-              : Colors.transparent,
-          border: Border.all(
+      child: InkWell(
+        onTap: () =>
+            context.push(AppRoute.dayDetail.fullPath, extra: dayCell.day),
+        child: Container(
+          height: cellHeight - verticalPadding * 2,
+          decoration: BoxDecoration(
             color: dayCell.isToday
-                ? HarubeeColor.mainSecondary(mode)
+                ? HarubeeColor.bgSecondary50(mode)
                 : Colors.transparent,
-            width: 2,
+            border: Border.all(
+              color: dayCell.isToday
+                  ? HarubeeColor.mainSecondary(mode)
+                  : Colors.transparent,
+              width: 2,
+            ),
+            borderRadius: BorderRadius.circular(8),
           ),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              dayCell.day.toString(),
-              style: TextStyle(
-                color: HarubeeColor.textPrimary(mode),
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                dayText,
+                style: TextStyle(
+                  color: HarubeeColor.textPrimary(mode),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-            if (hexagonImage != null)
-              Image.asset(hexagonImage!, width: 23, height: 23),
-            Text(
-              dayCell.amount.toString().formattedExpression,
-              style: TextStyle(
-                color: amountColor,
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
+              if (hexagonImage != null)
+                Image.asset(hexagonImage!, width: 23, height: 23),
+              Text(
+                dayCell.amount.toString().formattedExpression,
+                style: TextStyle(
+                  color: amountColor,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

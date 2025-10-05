@@ -12,7 +12,7 @@ class CalendarViewModel extends ChangeNotifier {
   String get endDate =>
       _currSalaryBudget?.endDate.formatted(DateFormatStyle.monthDay) ?? "";
   List<DayCell?> get calendarDays => _calendarDays;
-  int get calendarColCount => (_calendarDays.length / 7).ceil().toInt();
+  int get calendarColCount => (_calendarDays.length ~/ 7).ceil();
 
   // internal variable
   final DateTime _todayDate = DateTime.now();
@@ -75,12 +75,9 @@ class CalendarViewModel extends ChangeNotifier {
           e.expense,
           e.income,
         );
-        final day = e.date.day == 1
-            ? "${e.date.month}/1"
-            : e.date.day.toString();
 
         return DayCell(
-          day: day,
+          day: e.date,
           hexagonType: hexagonType,
           amount: amount,
           amountState: state,
