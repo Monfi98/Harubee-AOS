@@ -17,4 +17,6 @@ extension DateFormatting on DateTime {
         return "$year년 $month월 $day일 ($weekdayStr)";
     }
   }
+
+  DateTime get onlyDate => DateTime(year, month, day);
 }

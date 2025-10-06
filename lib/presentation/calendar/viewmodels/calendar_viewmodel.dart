@@ -15,7 +15,7 @@ class CalendarViewModel extends ChangeNotifier {
   int get calendarColCount => (_calendarDays.length ~/ 7).ceil();
 
   // internal variable
-  final DateTime _todayDate = DateTime.now();
+  final DateTime _todayDate = DateTime.now().onlyDate;
   SalaryBudget? _prevSalaryBudget;
   SalaryBudget? _currSalaryBudget;
   SalaryBudget? _nextSalaryBudget;
@@ -23,12 +23,12 @@ class CalendarViewModel extends ChangeNotifier {
 
   // intialize
   CalendarViewModel() {
-    _fetchSalaryBudgets();
+    _loadSalaryBudgets();
     _generateCalendarDays();
   }
 
   // internal function
-  void _fetchSalaryBudgets() {
+  void _loadSalaryBudgets() {
     // TODO: 실제 DB들어오면 교체
     final currSalaryBudget = SalaryBudget(
       startDate: DateTime(2024, 9, 19),
@@ -38,7 +38,7 @@ class CalendarViewModel extends ChangeNotifier {
       balance: 1000000,
       defaultHarubee: 25000,
       dailyBudgets: List.generate(
-        50,
+        35,
         (i) => DailyBudget(
           date: DateTime(2024, 9, 19 + i),
           harubee: 20000,
@@ -63,17 +63,17 @@ class CalendarViewModel extends ChangeNotifier {
             e.harubee?.toDouble() ?? _currSalaryBudget!.defaultHarubee;
 
         final hexagonType = _getHexagonType(
-          e.date,
-          harubee,
-          e.expense,
-          e.income,
+          targetDate: e.date,
+          harubee: harubee,
+          expense: e.expense,
+          income: e.income,
         );
         final (amount, state) = _getAmount(
-          e.date,
-          _currSalaryBudget!.defaultHarubee,
-          harubee,
-          e.expense,
-          e.income,
+          targetDate: e.date,
+          defaultHarubee: _currSalaryBudget!.defaultHarubee,
+          harubee: harubee,
+          expense: e.expense,
+          income: e.income,
         );
 
         return DayCell(
@@ -88,12 +88,12 @@ class CalendarViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  HexagonType _getHexagonType(
-    DateTime targetDate,
-    double harubee,
-    int? expense,
-    int? income,
-  ) {
+  HexagonType _getHexagonType({
+    required DateTime targetDate,
+    required double harubee,
+    required int? expense,
+    required int? income,
+  }) {
     final isFuture = targetDate.isAfter(_todayDate);
     final hasTransaction = expense != null || income != null;
 
@@ -112,15 +112,15 @@ class CalendarViewModel extends ChangeNotifier {
     }
   }
 
-  (int, AmountState) _getAmount(
-    DateTime targetDate,
-    double defaultHarubee,
-    double harubee,
-    int? expense,
-    int? income,
-  ) {
+  (int, AmountState) _getAmount({
+    required targetDate,
+    required double defaultHarubee,
+    required double harubee,
+    required int? expense,
+    required int? income,
+  }) {
     final isPast = targetDate.isBefore(_todayDate);
-    final isToday = targetDate.isAtSameMomentAs(_todayDate);
+    final isToday = targetDate == _todayDate;
     final isFuture = targetDate.isAfter(_todayDate);
 
     final hasTransaction = expense != null || income != null;

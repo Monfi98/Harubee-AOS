@@ -270,45 +270,50 @@ class CalendarCell extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: verticalPadding),
-      child: InkWell(
-        onTap: () =>
-            context.push(AppRoute.dayDetail.fullPath, extra: dayCell.day),
-        child: Container(
-          height: cellHeight - verticalPadding * 2,
-          decoration: BoxDecoration(
-            color: dayCell.isToday
-                ? HarubeeColor.bgSecondary50(mode)
-                : Colors.transparent,
-            border: Border.all(
+      child: Material(
+        borderRadius: BorderRadius.circular(8),
+        clipBehavior: Clip.antiAlias,
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () =>
+              context.push(AppRoute.dayDetail.fullPath, extra: dayCell.day),
+          child: Container(
+            height: cellHeight - verticalPadding * 2,
+            decoration: BoxDecoration(
               color: dayCell.isToday
-                  ? HarubeeColor.mainSecondary(mode)
+                  ? HarubeeColor.bgSecondary50(mode)
                   : Colors.transparent,
-              width: 2,
+              border: Border.all(
+                color: dayCell.isToday
+                    ? HarubeeColor.mainSecondary(mode)
+                    : Colors.transparent,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(8),
             ),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                dayText,
-                style: TextStyle(
-                  color: HarubeeColor.textPrimary(mode),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  dayText,
+                  style: TextStyle(
+                    color: HarubeeColor.textPrimary(mode),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              if (hexagonImage != null)
-                Image.asset(hexagonImage!, width: 23, height: 23),
-              Text(
-                dayCell.amount.toString().formattedExpression,
-                style: TextStyle(
-                  color: amountColor,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
+                if (hexagonImage != null)
+                  Image.asset(hexagonImage!, width: 23, height: 23),
+                Text(
+                  dayCell.amount.toString().formattedExpression,
+                  style: TextStyle(
+                    color: amountColor,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
