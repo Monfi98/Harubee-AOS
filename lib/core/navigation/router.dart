@@ -6,23 +6,24 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoute.today.path,
       pageBuilder: (_, _) => AppRoute.today.buildPage(),
-      routes: [
-        GoRoute(
-          path: AppRoute.transactionInput.path,
-          pageBuilder: (_, _) => AppRoute.transactionInput.buildPage(),
-        ),
-        GoRoute(
-          path: AppRoute.calendar.path,
-          pageBuilder: (_, _) => AppRoute.calendar.buildPage(),
-          routes: [
-            GoRoute(
-              path: AppRoute.dayDetail.path,
-              pageBuilder: (_, state) =>
-                  AppRoute.dayDetail.buildPage(extra: state.extra),
-            ),
-          ],
-        ),
-      ],
+    ),
+    GoRoute(
+      path: AppRoute.transactionInput.path,
+      pageBuilder: (_, state) =>
+          AppRoute.transactionInput.buildPage(extra: state.extra),
+    ),
+    GoRoute(
+      path: AppRoute.calendar.path,
+      pageBuilder: (_, _) => AppRoute.calendar.buildPage(),
+    ),
+    GoRoute(
+      path: AppRoute.dayDetail.path,
+      pageBuilder: (_, state) =>
+          AppRoute.dayDetail.buildPage(extra: state.extra),
+    ),
+    GoRoute(
+      path: AppRoute.memoEdit.path,
+      pageBuilder: (_, _) => AppRoute.memoEdit.buildPage(),
     ),
   ],
 );

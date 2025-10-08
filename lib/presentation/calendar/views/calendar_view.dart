@@ -276,7 +276,7 @@ class CalendarCell extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () =>
-              context.push(AppRoute.dayDetail.fullPath, extra: dayCell.day),
+              context.push(AppRoute.dayDetail.path, extra: dayCell.day),
           child: Container(
             height: cellHeight - verticalPadding * 2,
             decoration: BoxDecoration(

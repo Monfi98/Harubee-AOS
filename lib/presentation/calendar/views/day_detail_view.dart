@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:harubee/core/navigation/app_route.dart';
 import 'package:harubee/core/utils/datetime_extension.dart';
 import 'package:harubee/core/utils/string_extension.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
@@ -237,7 +238,8 @@ class HarubeeSection extends StatelessWidget {
                   title: "수입",
                   amount: "-",
                   selected: false,
-                  onPressed: () {},
+                  onPressed: () =>
+                      context.push(AppRoute.transactionInput.path, extra: true),
                   color: HarubeeColor.textTertiary30(Appearance.light),
                 ),
                 const SizedBox(width: 9),
@@ -245,7 +247,7 @@ class HarubeeSection extends StatelessWidget {
                   title: "지출",
                   amount: "-",
                   selected: false,
-                  onPressed: () {},
+                  onPressed: () => context.push(AppRoute.transactionInput.path),
                   color: HarubeeColor.textTertiary30(Appearance.light),
                 ),
               ],
@@ -286,7 +288,7 @@ class MemoSection extends StatelessWidget {
                 IconButton(
                   icon: const Icon(CupertinoIcons.plus, size: 20),
                   color: HarubeeColor.textPrimary(Appearance.light),
-                  onPressed: () {},
+                  onPressed: () => context.push(AppRoute.memoEdit.path),
                 ),
               ],
             ),

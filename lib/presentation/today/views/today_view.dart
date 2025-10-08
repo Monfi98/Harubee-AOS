@@ -209,7 +209,7 @@ class FooterSection extends StatelessWidget {
             label: "실제 지출 및 수입 입력하기",
             backgroundColor: HarubeeColor.mainPrimary(mode),
             foregroundColor: HarubeeColor.textFixed,
-            onPressed: () => context.go(AppRoute.transactionInput.fullPath),
+            onPressed: () => context.push(AppRoute.transactionInput.path),
           ),
         ],
       ),
@@ -234,7 +234,7 @@ class StreakCalendar extends StatelessWidget {
     final flexValues = [3, 1, 3];
 
     return InkWell(
-      onTap: () => context.go(AppRoute.calendar.fullPath),
+      onTap: () => context.push(AppRoute.calendar.path),
       child: Column(
         children: [
           Row(

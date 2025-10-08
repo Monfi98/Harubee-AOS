@@ -24,48 +24,53 @@ class TransactionInputContainer extends StatelessWidget {
         : Appearance.light;
 
     return Expanded(
-      child: GestureDetector(
-        onTap: onPressed,
-        child: Container(
-          height: 84,
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 14),
-          decoration: BoxDecoration(
-            color: color,
-            border: Border.all(
-              color: selected
-                  ? HarubeeColor.mainSecondary(mode)
-                  : Colors.transparent,
-              width: 1.5,
-            ),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  color: HarubeeColor.textPrimary(mode),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+      child: Material(
+        borderRadius: BorderRadius.circular(5),
+        clipBehavior: Clip.antiAlias,
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          child: Container(
+            height: 84,
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 14),
+            decoration: BoxDecoration(
+              color: color,
+              border: Border.all(
+                color: selected
+                    ? HarubeeColor.mainSecondary(mode)
+                    : Colors.transparent,
+                width: 1,
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    "$amount 원",
-                    style: TextStyle(
-                      color: HarubeeColor.textPrimary(mode),
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: HarubeeColor.textPrimary(mode),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      "$amount 원",
+                      style: TextStyle(
+                        color: HarubeeColor.textPrimary(mode),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

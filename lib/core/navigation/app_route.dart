@@ -5,28 +5,16 @@ import 'package:harubee/presentation/calendar/viewmodels/calendar_viewmodel.dart
 import 'package:harubee/presentation/calendar/viewmodels/day_detail_viewmodel.dart';
 import 'package:harubee/presentation/calendar/views/calendar_view.dart';
 import 'package:harubee/presentation/calendar/views/day_detail_view.dart';
+import 'package:harubee/presentation/calendar/views/memo_edit_view.dart';
 import 'package:harubee/presentation/common/viewmodels/transaction_input_viewmodel.dart';
 import 'package:harubee/presentation/common/views/transaction_input_view.dart';
 import 'package:harubee/presentation/today/views/today_view.dart';
 import 'package:provider/provider.dart';
 
-enum AppRoute { today, transactionInput, calendar, dayDetail }
+enum AppRoute { today, transactionInput, calendar, dayDetail, memoEdit }
 
 extension AppRouteExt on AppRoute {
   String get path {
-    switch (this) {
-      case AppRoute.today:
-        return '/';
-      case AppRoute.transactionInput:
-        return 'transaction_input';
-      case AppRoute.calendar:
-        return 'calendar';
-      case AppRoute.dayDetail:
-        return 'dayDetail';
-    }
-  }
-
-  String get fullPath {
     switch (this) {
       case AppRoute.today:
         return '/';
@@ -35,7 +23,9 @@ extension AppRouteExt on AppRoute {
       case AppRoute.calendar:
         return '/calendar';
       case AppRoute.dayDetail:
-        return '/calendar/dayDetail';
+        return '/day_detail';
+      case AppRoute.memoEdit:
+        return '/memo_edit';
     }
   }
 
@@ -45,9 +35,11 @@ extension AppRouteExt on AppRoute {
         return const MaterialPage(child: TodayView());
 
       case AppRoute.transactionInput:
+        final isIncomeSelected = extra == null ? false : extra as bool;
         return ModalPage(
           child: ChangeNotifierProvider(
-            create: (_) => TransactionInputViewmodel(),
+            create: (_) =>
+                TransactionInputViewmodel(isIncomeSelected: isIncomeSelected),
             child: const TransactionInputView(),
           ),
         );
@@ -68,6 +60,9 @@ extension AppRouteExt on AppRoute {
             child: DayDetailView(),
           ),
         );
+
+      case AppRoute.memoEdit:
+        return ModalPage(child: const MemoEditView());
     }
   }
 }

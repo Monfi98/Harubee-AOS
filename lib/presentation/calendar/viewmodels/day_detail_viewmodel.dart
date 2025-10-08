@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:harubee/core/utils/string_extension.dart';
 import 'package:harubee/domain/models/daily_budget.dart';
-import 'package:harubee/domain/models/salary_budget.dart';
 import 'package:harubee/domain/models/transaction_item.dart';
 
 class DayDetailViewmodel extends ChangeNotifier {

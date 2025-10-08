@@ -17,7 +17,11 @@ class TransactionInputViewmodel extends ChangeNotifier {
   TransactionType _selectedType = TransactionType.expense;
 
   // Intialize
-  TransactionInputViewmodel() {
+  TransactionInputViewmodel({required bool isIncomeSelected}) {
+    if (isIncomeSelected == true) {
+      debugPrint("Income Selected");
+      _selectedType = TransactionType.income;
+    }
     _setupCalculatorVM();
   }
 
