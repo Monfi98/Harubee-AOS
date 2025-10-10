@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
+import 'package:harubee/presentation/common/views/float_placeholder_textfield.dart';
+import 'package:harubee/presentation/common/widgets/bottom_button.dart';
 
 class MemoEditView extends StatelessWidget {
   const MemoEditView({super.key});
@@ -8,12 +10,13 @@ class MemoEditView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 20),
+      height: 203,
+      padding: EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         color: HarubeeColor.bgPrimary(Appearance.light),
       ),
-      child: Column(children: [TopBar()]),
+      child: Column(children: [TopBar(), Body()]),
     );
   }
 }
@@ -63,6 +66,35 @@ class TopBar extends StatelessWidget {
           SizedBox(width: 28),
         ],
       ),
+    );
+  }
+}
+
+// * Body
+class Body extends StatelessWidget {
+  const Body({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 36),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: FloatedPlaceholderTextField(
+            placeholder: "메모",
+            controller: TextEditingController(),
+          ),
+        ),
+        SizedBox(height: 24),
+        BottomButton(
+          label: "저장하기",
+          backgroundColor: HarubeeColor.mainPrimary(Appearance.light),
+          foregroundColor: HarubeeColor.textFixed,
+          onPressed: () {},
+          isSharpCornered: true,
+        ),
+      ],
     );
   }
 }

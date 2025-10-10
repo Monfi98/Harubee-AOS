@@ -8,7 +8,14 @@ class ModalPage<T> extends Page<T> {
   @override
   Route<T> createRoute(BuildContext context) => ModalBottomSheetRoute<T>(
     settings: this,
-    builder: (context) => child,
+    builder: (context) {
+      return Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: child,
+      );
+    },
     isScrollControlled: true,
   );
 }

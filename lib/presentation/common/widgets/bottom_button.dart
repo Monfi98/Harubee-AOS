@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 class BottomButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
   final Color backgroundColor;
   final Color foregroundColor;
+  final bool? isSharpCornered;
 
   const BottomButton({
     super.key,
@@ -12,6 +14,7 @@ class BottomButton extends StatelessWidget {
     required this.onPressed,
     required this.backgroundColor,
     required this.foregroundColor,
+    this.isSharpCornered,
   });
 
   @override
@@ -22,8 +25,10 @@ class BottomButton extends StatelessWidget {
         backgroundColor: backgroundColor,
         foregroundColor: foregroundColor,
         textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(isSharpCornered == true ? 0 : 10),
+          ),
         ),
       ),
       onPressed: onPressed,
