@@ -2,7 +2,12 @@ import 'package:go_router/go_router.dart';
 import 'package:harubee/core/navigation/app_route.dart';
 
 final GoRouter router = GoRouter(
+  initialLocation: AppRoute.onBoarding.path,
   routes: [
+    GoRoute(
+      path: AppRoute.onBoarding.path,
+      pageBuilder: (_, _) => AppRoute.onBoarding.buildPage(),
+    ),
     GoRoute(
       path: AppRoute.today.path,
       pageBuilder: (_, _) => AppRoute.today.buildPage(),

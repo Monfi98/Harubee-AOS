@@ -3,13 +3,16 @@ import 'package:harubee/design_system/colors/harubee_color.dart';
 
 class FloatedPlaceholderTextField extends StatefulWidget {
   final String? placeholder;
-  final TextEditingController controller;
+  final ValueChanged<String>? onChanged;
+  final int? maxLength;
+  final _controller = TextEditingController();
   final _focusNode = FocusNode();
 
   FloatedPlaceholderTextField({
     super.key,
     required this.placeholder,
-    required this.controller,
+    required this.onChanged,
+    this.maxLength,
   });
 
   @override
@@ -23,14 +26,19 @@ class _FloatedPlaceholderTextFieldState
   void initState() {
     super.initState();
     widget._focusNode.addListener(_handleFocusChange);
-    widget.controller.addListener(_handleTextChange);
+    widget._controller.addListener(_handleTextChange);
   }
 
   void _handleFocusChange() => setState(() {});
-  void _handleTextChange() => setState(() {});
+  void _handleTextChange() {
+    setState(() {});
+    if (widget.onChanged != null) {
+      widget.onChanged!(widget._controller.text);
+    }
+  }
 
   bool get _isEditing =>
-      widget._focusNode.hasFocus || widget.controller.text.isNotEmpty;
+      widget._focusNode.hasFocus || widget._controller.text.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +68,9 @@ class _FloatedPlaceholderTextFieldState
           ),
         ),
         CupertinoTextField(
-          controller: widget.controller,
+          autofocus: true,
+          maxLength: widget.maxLength,
+          controller: widget._controller,
           focusNode: widget._focusNode,
           style: TextStyle(
             color: HarubeeColor.textPrimary(Appearance.light),

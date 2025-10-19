@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harubee/design_system/colors/harubee_color.dart';
+import 'package:harubee/presentation/calendar/viewmodels/memo_edit_viewmodel.dart';
 import 'package:harubee/presentation/common/views/float_placeholder_textfield.dart';
 import 'package:harubee/presentation/common/widgets/bottom_button.dart';
+import 'package:provider/provider.dart';
 
 class MemoEditView extends StatelessWidget {
   const MemoEditView({super.key});
@@ -76,14 +78,21 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final memoMaxLength = 20;
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        SizedBox(height: 36),
+        TextLimitIndicator(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: FloatedPlaceholderTextField(
             placeholder: "메모",
-            controller: TextEditingController(),
+            onChanged: (text) {
+              if (text.length > memoMaxLength) return;
+              context.read<MemoEditViewmodel>().onChangeText(text: text);
+            },
+            maxLength: memoMaxLength,
           ),
         ),
         SizedBox(height: 24),
@@ -95,6 +104,27 @@ class Body extends StatelessWidget {
           isSharpCornered: true,
         ),
       ],
+    );
+  }
+}
+
+class TextLimitIndicator extends StatelessWidget {
+  const TextLimitIndicator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final memoEditVM = context.watch<MemoEditViewmodel>();
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 16.0, top: 17),
+      child: Text(
+        "(${memoEditVM.memo.length}/20)",
+        style: TextStyle(
+          color: HarubeeColor.textPrimary(Appearance.light),
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
     );
   }
 }
